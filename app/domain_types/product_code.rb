@@ -33,13 +33,25 @@ class ProductCode < T::Struct
 
   sig {returns(String)}
   def value
-    widget_code_error_bags = WidgetCode.errors_bag(code)
-    gizmo_code_error_bags = GizmoCode.errors_bag(code)
-
-    if widget_code_error_bags.size > 0 && gizmo_code_error_bags.size > 0
-      raise StandardError.new("#{widget_code_error_bags.first} or #{gizmo_code_error_bags.first}")
-    else
+    if is_valid?
       code
+    else
+      raise StandardError.new("#{WidgetCode.errors_bag(code).first} or #{WidgetCode.errors_bag(code).first}")
     end
+  end
+
+  sig {returns(T::Boolean)}
+  def is_widget?
+    WidgetCode.errors_bag(code).empty?
+  end
+
+  sig {returns(T::Boolean)}
+  def is_gizmo?
+    GizmoCode.errors_bag(code).empty?
+  end
+
+  sig {returns(T::Boolean)}
+  def is_valid?
+    is_widget? || is_gizmo?
   end
 end
