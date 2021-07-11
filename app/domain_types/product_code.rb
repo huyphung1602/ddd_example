@@ -32,7 +32,7 @@ class ProductCode < T::Struct
   prop :code, String
 
   sig {returns(String)}
-  def value
+  def validate
     if is_valid?
       code
     else
