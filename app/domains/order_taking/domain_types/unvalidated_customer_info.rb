@@ -1,7 +1,7 @@
 # typed: strict
 
 module OrderTaking::DomainTypes
-  class CustomerInfo < T::Struct
+  class UnvalidatedCustomerInfo < T::Struct
     prop :name, String
     prop :email, String
   end

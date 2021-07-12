@@ -1,6 +1,6 @@
 # typed: strict
 
-module OrderTaking::DependenciesWrapper
+module OrderTaking::Dependencies
   class CheckAddressExists
     extend T::Sig
 
@@ -14,7 +14,7 @@ module OrderTaking::DependenciesWrapper
     def self.check_address(address)
       # sleep 10
 
-      !!MOCK_EXISTED_ADDRESS[address]
+      raise StandardError.new('Product Code does not exist') unless !!MOCK_EXISTED_ADDRESS[address]
     end
   end
 end

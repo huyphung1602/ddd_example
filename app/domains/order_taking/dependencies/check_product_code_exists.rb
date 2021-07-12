@@ -1,6 +1,6 @@
 # typed: strict
 
-module OrderTaking::DependenciesWrapper
+module OrderTaking::Dependencies
   class CheckProductCodeExists
     extend T::Sig
 
@@ -19,7 +19,7 @@ module OrderTaking::DependenciesWrapper
     def self.check_product_code(product_code)
       # sleep 10
 
-      !!MOCK_PRODUCT_CODE[product_code.validate]
+      raise StandardError.new('Product Code does not exist') unless !!MOCK_PRODUCT_CODE[product_code.validate]
     end
   end
 end
