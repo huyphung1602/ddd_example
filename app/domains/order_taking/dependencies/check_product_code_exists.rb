@@ -19,7 +19,7 @@ module OrderTaking::Dependencies
     def self.check_product_code(product_code)
       # sleep 10
 
-      raise StandardError.new('Product Code does not exist') unless !!MOCK_PRODUCT_CODE[product_code]
+      raise OrderTaking::OrderTakingErrors::DependenciesError.new('Product Code does not exist') unless !!MOCK_PRODUCT_CODE[product_code]
     end
   end
 end

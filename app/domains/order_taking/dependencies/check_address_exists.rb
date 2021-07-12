@@ -14,7 +14,7 @@ module OrderTaking::Dependencies
     def self.check_address(address)
       # sleep 10
 
-      raise StandardError.new('Product Code does not exist') unless !!MOCK_EXISTED_ADDRESS[address]
+      raise OrderTaking::OrderTakingErrors::DependenciesError.new('Address does not exist') unless !!MOCK_EXISTED_ADDRESS[address]
     end
   end
 end

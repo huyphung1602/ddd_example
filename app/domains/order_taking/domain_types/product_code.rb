@@ -36,7 +36,7 @@ module OrderTaking::DomainTypes
       if is_valid?
         code
       else
-        raise StandardError.new("#{WidgetCode.errors_bag(code).first} or #{WidgetCode.errors_bag(code).first}")
+        raise OrderTaking::OrderTakingErrors::ValidationError.new("#{WidgetCode.errors_bag(code).first} or #{WidgetCode.errors_bag(code).first}")
       end
     end
 
