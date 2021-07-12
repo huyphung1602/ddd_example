@@ -10,7 +10,7 @@ module OrderTaking::Dependencies
       'Nha Huy Phung' => true,
     }.freeze, T::Hash[String, T::Boolean])
 
-    sig {params(address: String).returns(T::Boolean)}
+    sig {params(address: String).void}
     def self.check_address(address)
       # sleep 10
 

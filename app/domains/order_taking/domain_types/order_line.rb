@@ -1,5 +1,9 @@
 # typed: strict
 
+# Examples:
+# ol1 = OrderTaking::DomainTypes::OrderLine.new({ id: 1, order_id: 1, product_code: 'G001', order_quanity: 1.5, price: 1000 })
+# ol2 = OrderTaking::DomainTypes::OrderLine.new({ id: 1, order_id: 1, product_code: 'W0001', order_quanity: 3, price: 1000 })
+
 module OrderTaking::DomainTypes
   class OrderLine < T::Struct
     extend T::Sig
@@ -17,7 +21,7 @@ module OrderTaking::DomainTypes
         id: id,
         order_id: order_id,
         product_code: product_code_inst.validate,
-        order_quanity: OrderQuanity.value(product_code_inst, order_quanity),
+        order_quanity: OrderQuanity.validate(product_code_inst, order_quanity),
         price: price,
       )
     end

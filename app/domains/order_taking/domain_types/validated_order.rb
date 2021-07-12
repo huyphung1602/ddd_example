@@ -2,7 +2,7 @@
 
 module OrderTaking::DomainTypes
   class ValidatedOrder < T::Struct
-    prop :order_id, String
+    prop :id, Integer
     prop :customer_info, ValidatedCustomerInfo
     prop :shipping_address, String
     prop :billing_address, String

@@ -8,7 +8,7 @@ module OrderTaking::DomainTypes
       params(code: ProductCode, order_quanity: T.any(Integer, Float))
         .returns(T.any(Integer, Float))
     end
-    def self.value(code, order_quanity)
+    def self.validate(code, order_quanity)
       if code.is_gizmo?
         T.cast(order_quanity, Float)
       elsif code.is_widget?

@@ -15,11 +15,11 @@ module OrderTaking::Dependencies
       'W0004' => true,
     }.freeze, T::Hash[String, T::Boolean])
 
-    sig {params(product_code: OrderTaking::DomainTypes::ProductCode).returns(T::Boolean)}
+    sig {params(product_code: String).void}
     def self.check_product_code(product_code)
       # sleep 10
 
-      raise StandardError.new('Product Code does not exist') unless !!MOCK_PRODUCT_CODE[product_code.validate]
+      raise StandardError.new('Product Code does not exist') unless !!MOCK_PRODUCT_CODE[product_code]
     end
   end
 end
