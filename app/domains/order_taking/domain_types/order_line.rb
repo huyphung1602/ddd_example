@@ -12,7 +12,6 @@ module OrderTaking::DomainTypes
     prop :order_id, Integer
     prop :product_code, String
     prop :order_quanity, T.any(Integer, Float)
-    prop :price, T.nilable(Integer)
 
     sig {returns(OrderLine)}
     def validate
@@ -22,7 +21,6 @@ module OrderTaking::DomainTypes
         order_id: order_id,
         product_code: product_code_inst.validate,
         order_quanity: OrderQuanity.validate(product_code_inst, order_quanity),
-        price: price,
       )
     end
   end

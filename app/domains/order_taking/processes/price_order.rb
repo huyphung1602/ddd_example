@@ -10,7 +10,7 @@ module OrderTaking::Processes
     end
     def self.execute(validated_order)
       priced_order_lines = validated_order.order_lines.map do |ol|
-        OrderTaking::DomainTypes::OrderLine.new(
+        OrderTaking::DomainTypes::PricedOrderLine.new(
           id: ol.id,
           order_id: ol.order_id,
           product_code: ol.product_code,

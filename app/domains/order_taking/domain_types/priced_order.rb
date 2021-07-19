@@ -8,12 +8,12 @@ module OrderTaking::DomainTypes
     prop :customer_info, ValidatedCustomerInfo
     prop :shipping_address, String
     prop :billing_address, String
-    prop :order_lines, T::Array[OrderLine]
+    prop :order_lines, T::Array[PricedOrderLine]
 
     sig {returns(T.any(Integer, Float))}
     def amount_to_bill
       order_lines.reduce(0) do |acc, ol|
-        acc + ol.order_quanity * T.cast(ol.price, Integer)
+        acc + ol.order_quanity * ol.price
       end
     end
   end
