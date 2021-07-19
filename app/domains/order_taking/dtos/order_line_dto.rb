@@ -4,7 +4,7 @@ module OrderTaking::Dtos
     extend T::Sig
 
     sig {params(order_line: T.any(OrderTaking::DomainTypes::OrderLine, OrderTaking::DomainTypes::PricedOrderLine)).returns(JSON)}
-    def fromDomain(order_line)
+    def self.fromDomain(order_line)
       price = order_line.is_a?(OrderTaking::DomainTypes::PricedOrderLine) ? order_line.price : nil
 
       JSON.generate(

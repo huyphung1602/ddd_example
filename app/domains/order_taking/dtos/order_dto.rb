@@ -12,7 +12,7 @@ module OrderTaking::Dtos
         )
       ).returns(JSON)
     end
-    def fromDomain(order)
+    def self.fromDomain(order)
       case order
       when OrderTaking::DomainTypes::ValidatedOrder
         packValidatedOrder(order)
@@ -26,7 +26,7 @@ module OrderTaking::Dtos
     private
 
     sig {params(unvalidated_order: OrderTaking::DomainTypes::UnvalidatedOrder).returns(JSON)}
-    def packUnvalidatedOrder(unvalidated_order)
+    def self.packUnvalidatedOrder(unvalidated_order)
       JSON.generate(
         {
           customer_name: unvalidated_order.customer_info.name,
@@ -40,7 +40,7 @@ module OrderTaking::Dtos
     end
 
     sig {params(validated_order: OrderTaking::DomainTypes::ValidatedOrder).returns(JSON)}
-    def packValidatedOrder(validated_order)
+    def self.packValidatedOrder(validated_order)
       JSON.generate(
         {
           customer_name: validated_order.customer_info.name,
@@ -54,7 +54,7 @@ module OrderTaking::Dtos
     end
 
     sig {params(priced_order: OrderTaking::DomainTypes::PricedOrder).returns(JSON)}
-    def packPricedOrder(priced_order)
+    def self.packPricedOrder(priced_order)
       JSON.generate(
         {
           customer_name: priced_order.customer_info.name,
