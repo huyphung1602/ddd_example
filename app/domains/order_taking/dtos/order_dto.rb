@@ -23,6 +23,26 @@ module OrderTaking::Dtos
       end
     end
 
+    sig do
+      params(order_json: String).returns(
+        T.any(
+          OrderTaking::DomainTypes::UnvalidatedOrder,
+          OrderTaking::DomainTypes::ValidatedOrder,
+          OrderTaking::DomainTypes::PricedOrder,
+        )
+      )
+    end
+    def self.toDomain(order_json)
+      parsed_order = JSON.parse(order_json)
+      if parsed_order['is_priced']
+        OrderTaking::DomainTypes::PricedOrder.new(parsed_order.except('is_priced', 'is_valid'))
+      elsif parsed_order['is_valid']
+        OrderTaking::DomainTypes::ValidatedOrder.new(parsed_order.except('is_priced', 'is_valid'))
+      else
+        OrderTaking::DomainTypes::UnvalidatedOrder.new(parsed_order.except('is_priced', 'is_valid'))
+      end
+    end
+
     private
 
     sig {params(unvalidated_order: OrderTaking::DomainTypes::UnvalidatedOrder).returns(JSON)}
@@ -33,8 +53,8 @@ module OrderTaking::Dtos
           customer_email: unvalidated_order.customer_info.email,
           shipping_address: unvalidated_order.shipping_address,
           billing_address: unvalidated_order.billing_address,
-          isValid: false,
-          isPriced: false,
+          is_valid: false,
+          is_priced: false,
         }
       )
     end
@@ -47,8 +67,8 @@ module OrderTaking::Dtos
           customer_email: validated_order.customer_info.email,
           shipping_address: validated_order.shipping_address,
           billing_address: validated_order.billing_address,
-          isValid: true,
-          isPriced: false,
+          is_valid: true,
+          is_priced: false,
         }
       )
     end
@@ -61,8 +81,8 @@ module OrderTaking::Dtos
           customer_email: priced_order.customer_info.email,
           shipping_address: priced_order.shipping_address,
           billing_address: priced_order.billing_address,
-          isValid: true,
-          isPriced: true,
+          is_valid: true,
+          is_priced: true,
         }
       )
     end

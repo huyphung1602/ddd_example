@@ -16,5 +16,15 @@ module OrderTaking::Dtos
         }
       )
     end
+
+    sig {params(order_line_json: String).returns(T.any(OrderTaking::DomainTypes::OrderLine, OrderTaking::DomainTypes::PricedOrderLine))}
+    def self.toDomain(order_line_json)
+      parsed_order_line = JSON.parse(order_line_json)
+      if parsed_order_line['price'].present?
+        OrderTaking::DomainTypes::PricedOrderLine.new(parsed_order_line)
+      else
+        OrderTaking::DomainTypes::OrderLine.new(parsed_order_line.except(:price))
+      end
+    end
   end
 end
