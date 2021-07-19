@@ -13,7 +13,7 @@ module OrderTaking::DomainTypes
     sig {returns(T.any(Integer, Float))}
     def amount_to_bill
       order_lines.reduce(0) do |acc, ol|
-        acc + ol.order_quanity * ol.price
+        acc + ol.order_quantity * ol.price
       end
     end
   end

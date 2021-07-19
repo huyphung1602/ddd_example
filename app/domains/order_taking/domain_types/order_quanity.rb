@@ -1,20 +1,20 @@
 # typed: strict
 
 module OrderTaking::DomainTypes
-  class OrderQuanity < T::Struct
+  class Orderquantity < T::Struct
     extend T::Sig
 
     sig do
-      params(code: ProductCode, order_quanity: T.any(Integer, Float))
+      params(code: ProductCode, order_quantity: T.any(Integer, Float))
         .returns(T.any(Integer, Float))
     end
-    def self.validate(code, order_quanity)
+    def self.validate(code, order_quantity)
       if code.is_gizmo?
-        T.cast(order_quanity, Float)
+        T.cast(order_quantity, Float)
       elsif code.is_widget?
-        T.cast(order_quanity, Integer)
+        T.cast(order_quantity, Integer)
       else
-        order_quanity
+        order_quantity
       end
     end
   end

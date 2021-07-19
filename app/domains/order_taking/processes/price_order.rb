@@ -14,7 +14,7 @@ module OrderTaking::Processes
           id: ol.id,
           order_id: ol.order_id,
           product_code: ol.product_code,
-          order_quanity: ol.order_quanity,
+          order_quantity: ol.order_quantity,
           price: OrderTaking::Dependencies::GetProductPrice.get_product_price(ol.product_code)
         )
       end
