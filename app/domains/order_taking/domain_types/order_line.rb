@@ -10,17 +10,17 @@ module OrderTaking::DomainTypes
 
     prop :id, Integer
     prop :order_id, Integer
-    prop :product_code, String
+    prop :product_code, ProductCode
     prop :order_quantity, T.any(Integer, Float)
 
     sig {returns(OrderLine)}
     def validate
-      product_code_inst = ProductCode.new(code: product_code)
+      validated_product_code = ProductCode.new(code: product_code.validate)
       OrderLine.new(
         id: id,
         order_id: order_id,
-        product_code: product_code_inst.validate,
-        order_quantity: Orderquantity.validate(product_code_inst, order_quantity),
+        product_code: validated_product_code,
+        order_quantity: Orderquantity.validate(validated_product_code, order_quantity),
       )
     end
   end

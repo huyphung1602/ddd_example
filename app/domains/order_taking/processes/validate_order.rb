@@ -11,7 +11,7 @@ module OrderTaking::Processes
     def self.execute(unvalidated_order)
       validated_order_lines = unvalidated_order.order_lines.map(&:validate)
       validated_product_code_order_lines = validated_order_lines.map do |ol|
-        OrderTaking::Dependencies::CheckProductCodeExists.check_product_code(ol.product_code)
+        OrderTaking::Dependencies::CheckProductCodeExists.check_product_code(ol.product_code.code)
         ol
       end
 

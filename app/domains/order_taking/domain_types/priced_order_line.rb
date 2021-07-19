@@ -10,7 +10,7 @@ module OrderTaking::DomainTypes
 
     prop :id, Integer
     prop :order_id, Integer
-    prop :product_code, String
+    prop :product_code, ProductCode
     prop :order_quantity, T.any(Integer, Float)
     prop :price, Integer
   end
