@@ -1,7 +1,7 @@
 module OrderTaking
   class Deserializer
     def self.order_from_json(order_json)
-      raw_hash = order_json.deep_symbolize_keys
+      raw_hash = JSON.parse(order_json).deep_symbolize_keys
 
       order_hash = {
         customer_name: raw_hash[:customer_info][:name],
