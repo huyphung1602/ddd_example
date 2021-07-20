@@ -77,11 +77,11 @@ class Order < ApplicationRecord
         order_id: order_line.order_id,
         product_code: OrderTaking::DomainTypes::ProductCode.new(code: order_line.product_code),
         order_quantity: order_line.kilo_quantity || order_line.unit_quantity || 0,
-      ).validate
+      )
     end
     OrderTaking::DomainTypes::ValidatedOrder.new(
       id: self.id,
-      customer_info: unvalidated_customer_info,
+      customer_info: validated_customer_info,
       shipping_address: self.shipping_address,
       billing_address: self.billing_address,
       order_lines: order_lines
@@ -100,11 +100,11 @@ class Order < ApplicationRecord
         product_code: OrderTaking::DomainTypes::ProductCode.new(code: order_line.product_code),
         order_quantity: order_line.kilo_quantity || order_line.unit_quantity || 0,
         price: order_line.price,
-      ).validate
+      )
     end
     OrderTaking::DomainTypes::PricedOrder.new(
       id: self.id,
-      customer_info: unvalidated_customer_info,
+      customer_info: validated_customer_info,
       shipping_address: self.shipping_address,
       billing_address: self.billing_address,
       order_lines: order_lines
