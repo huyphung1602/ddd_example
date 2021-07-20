@@ -11,7 +11,7 @@ class Order < ApplicationRecord
       is_priced: false,
     }
 
-    case order_domain
+    order_hash = case order_domain
     when OrderTaking::DomainTypes::ValidatedOrder
       base_hash.merge(is_valid: true, is_priced: false)
     when OrderTaking::DomainTypes::PricedOrder
@@ -19,6 +19,11 @@ class Order < ApplicationRecord
     else
       base_hash
     end
+
+    order_line_hashes = OrderLine.from_domain(order_domain.order_lines)
+    puts order_line_hashes.inspect
+
+    [order_hash, order_line_hashes]
   end
 
   def self.from_hash(order_hash, order_line_hashes)

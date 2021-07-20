@@ -2,37 +2,59 @@
 
 module OrderTaking
   class Workflow < StandardError
-  #   def self.place_order(unvalidated_order)
-  #     begin
-  #       persistence_order = unvalidated_order
+    def self.place_order(order_json)
+        puts '---> Start deserializing order'
+        order_hash, order_line_hashes = OrderTaking::Deserializer.order_from_json(order_json)
 
-  #       # Validate order
-  #       puts 'Start validating order'
-  #       validated_order = OrderTaking::Processes::ValidateOrder.execute(unvalidated_order)
-  #       persistence_order = validated_order
-  #       puts '---'
-  #       puts validated_order.inspect
-  #       puts '---'
+        # Store order to database (to map identity with the database keys)
+        puts '---> Storing order from order json'
+        order = Order.from_hash(order_hash, order_line_hashes)
+        order.save!
 
-  #       # Priced Order
-  #       puts 'Start pricing order'
-  #       priced_order = OrderTaking::Processes::PriceOrder.execute(validated_order)
-  #       persistence_order = priced_order
-  #       puts '---'
-  #       puts priced_order.inspect
-  #       puts '---'
+        # Form the unvalidated_order from database
+        puts '---> Create unvalidtaed order from database'
+        unvalidated_order = order.to_domain
+        puts unvalidated_order.inspect
+        puts '----'
 
-  #     ensure
-  #       order = Order.new(Order.from_domain(persistence_order))
-  #       order_lines = persistence_order.order_lines.map do |ol|
-  #         OrderLine.new(OrderLine.from_domain(ol))
-  #       end
-  #       order.order_lines = order_lines
+        # Validate order
+        puts '---> Start validating order'
+        validated_order = OrderTaking::Processes::ValidateOrder.execute(unvalidated_order)
+        puts validated_order.inspect
+        puts '----'
 
-  #       ActiveRecord::Base.transaction dohttps://www.youtube.com/watch?v=X5AijdbjgIs
-  #         order.save!
-  #       end
-  #     end
-  #   end
-  # end
+        # Store validated order
+        puts '---> Update validated order to database'
+        persistence_order_state(validated_order)
+        puts '----'
+
+        #Priced Order
+        puts '---> Start pricing order'
+
+        priced_order = OrderTaking::Processes::PriceOrder.execute(validated_order)
+        puts priced_order.inspect
+        puts '----'
+
+        # Store priced order
+        puts '---> Update priced order to database'
+        persistence_order_state(priced_order)
+        puts '----'
+
+        priced_order
+    end
+
+    private
+
+    def self.persistence_order_state(order_state)
+      ActiveRecord::Base.transaction do
+        order_hash, order_line_hashes = Order.from_domain(order_state)
+
+        order = Order.find order_state.id
+        order.update(order_hash)
+        order.order_lines.each do |order_line|
+          order_line.update(order_line_hashes[order_line.id])
+        end
+      end
+    end
+  end
 end
