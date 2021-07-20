@@ -1,7 +1,8 @@
 class Order < ApplicationRecord
+  has_many :order_lines, dependent: :destroy
 
-  def self.to_dto(order_domain)
-    base_dto = {
+  def self.from_domain(order_domain)
+    base_hash = {
       customer_name: order_domain.customer_info.name,
       customer_email: order_domain.customer_info.email,
       shipping_address: order_domain.shipping_address,
@@ -12,11 +13,11 @@ class Order < ApplicationRecord
 
     case order_domain
     when OrderTaking::DomainTypes::ValidatedOrder
-      base_dto.merge(is_valid: true, is_priced: false)
+      base_hash.merge(is_valid: true, is_priced: false)
     when OrderTaking::DomainTypes::PricedOrder
-      base_dto.merge(is_valid: true, is_priced: true)
+      base_hash.merge(is_valid: true, is_priced: true)
     else
-      base_dto
+      base_hash
     end
   end
 end
