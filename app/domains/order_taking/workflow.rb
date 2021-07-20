@@ -1,13 +1,5 @@
 # typed: ignore
 
-# Sample
-# pc1 = OrderTaking::DomainTypes::ProductCode.new(code: 'G001')
-# pc2 = OrderTaking::DomainTypes::ProductCode.new(code: 'W0001')
-# ol1 = OrderTaking::DomainTypes::OrderLine.new({ id: 1, order_id: 1, product_code: pc1, order_quantity: 1.5 })
-# ol2 = OrderTaking::DomainTypes::OrderLine.new({ id: 2, order_id: 1, product_code: pc2, order_quantity: 3 })
-# ci = OrderTaking::DomainTypes::UnvalidatedCustomerInfo.new(name: 'Dendi', email: 'den@gmail.com')
-# uo =OrderTaking::DomainTypes::UnvalidatedOrder.new({ id: 1, customer_info: ci, shipping_address: '181 Cao Thang', billing_address: '181 Cao Thang', order_lines: [ol1, ol2]})
-
 module OrderTaking
   class Workflow < StandardError
   #   def self.place_order(unvalidated_order)
@@ -37,7 +29,7 @@ module OrderTaking
   #       end
   #       order.order_lines = order_lines
 
-  #       ActiveRecord::Base.transaction do
+  #       ActiveRecord::Base.transaction dohttps://www.youtube.com/watch?v=X5AijdbjgIs
   #         order.save!
   #       end
   #     end

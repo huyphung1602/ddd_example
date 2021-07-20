@@ -20,7 +20,7 @@ module OrderTaking::DomainTypes
         id: id,
         order_id: order_id,
         product_code: validated_product_code,
-        order_quantity: Orderquantity.validate(validated_product_code, order_quantity),
+        order_quantity: OrderQuantity.validate(validated_product_code, order_quantity),
       )
     end
   end

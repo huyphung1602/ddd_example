@@ -1,7 +1,7 @@
 # typed: strict
 
 module OrderTaking::DomainTypes
-  class Orderquantity < T::Struct
+  class OrderQuantity < T::Struct
     extend T::Sig
 
     sig do

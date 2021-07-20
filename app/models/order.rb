@@ -28,4 +28,81 @@ class Order < ApplicationRecord
 
     Order.new(order_hash.merge(order_lines: order_lines))
   end
+
+  def to_domain
+    if self.is_priced
+      build_priced_domain
+    elsif self.is_valid
+      build_validated_domain
+    else
+      build_unvalidated_domain
+    end
+  end
+
+  def build_unvalidated_domain
+    unvalidated_customer_info = OrderTaking::DomainTypes::UnvalidatedCustomerInfo.new(
+      name: self.customer_name,
+      email: self.customer_email,
+    )
+    order_lines = self.order_lines.map do |order_line|
+      OrderTaking::DomainTypes::OrderLine.new(
+        id: order_line.id,
+        order_id: order_line.order_id,
+        product_code: OrderTaking::DomainTypes::ProductCode.new(code: order_line.product_code),
+        order_quantity: order_line.kilo_quantity || order_line.unit_quantity || 0,
+      ).validate
+    end
+    OrderTaking::DomainTypes::UnvalidatedOrder.new(
+      id: self.id,
+      customer_info: unvalidated_customer_info,
+      shipping_address: self.shipping_address,
+      billing_address: self.billing_address,
+      order_lines: order_lines
+    )
+  end
+
+  def build_validated_domain
+    validated_customer_info = OrderTaking::DomainTypes::ValidatedCustomerInfo.new(
+      name: self.customer_name,
+      email: self.customer_email,
+    )
+    order_lines = self.order_lines.map do |order_line|
+      OrderTaking::DomainTypes::OrderLine.new(
+        id: order_line.id,
+        order_id: order_line.order_id,
+        product_code: OrderTaking::DomainTypes::ProductCode.new(code: order_line.product_code),
+        order_quantity: order_line.kilo_quantity || order_line.unit_quantity || 0,
+      ).validate
+    end
+    OrderTaking::DomainTypes::ValidatedOrder.new(
+      id: self.id,
+      customer_info: unvalidated_customer_info,
+      shipping_address: self.shipping_address,
+      billing_address: self.billing_address,
+      order_lines: order_lines
+    )
+  end
+
+  def build_priced_domain
+    validated_customer_info = OrderTaking::DomainTypes::ValidatedCustomerInfo.new(
+      name: self.customer_name,
+      email: self.customer_email,
+    )
+    order_lines = self.order_lines.map do |order_line|
+      OrderTaking::DomainTypes::PricedOrderLine.new(
+        id: order_line.id,
+        order_id: order_line.order_id,
+        product_code: OrderTaking::DomainTypes::ProductCode.new(code: order_line.product_code),
+        order_quantity: order_line.kilo_quantity || order_line.unit_quantity || 0,
+        price: order_line.price,
+      ).validate
+    end
+    OrderTaking::DomainTypes::PricedOrder.new(
+      id: self.id,
+      customer_info: unvalidated_customer_info,
+      shipping_address: self.shipping_address,
+      billing_address: self.billing_address,
+      order_lines: order_lines
+    )
+  end
 end
