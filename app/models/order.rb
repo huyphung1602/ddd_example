@@ -20,4 +20,12 @@ class Order < ApplicationRecord
       base_hash
     end
   end
+
+  def self.from_hash(order_hash, order_line_hashes)
+    order_lines = order_line_hashes.map do |order_line_hash|
+      OrderLine.new(order_line_hash)
+    end
+
+    Order.new(order_hash.merge(order_lines: order_lines))
+  end
 end

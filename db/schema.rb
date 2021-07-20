@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_07_19_154027) do
     t.string "customer_email"
     t.string "shipping_address"
     t.string "billing_address"
-    t.boolean "is_valid"
-    t.boolean "is_priced"
+    t.boolean "is_valid", default: false
+    t.boolean "is_priced", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

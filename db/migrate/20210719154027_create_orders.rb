@@ -7,8 +7,8 @@ class CreateOrders < ActiveRecord::Migration[6.1]
       t.string :customer_email
       t.string :shipping_address
       t.string :billing_address
-      t.boolean :is_valid
-      t.boolean :is_priced
+      t.boolean :is_valid, :default => false
+      t.boolean :is_priced, :default => false
 
       t.timestamps
     end
