@@ -25,7 +25,7 @@ module OrderTaking
 
         # Store validated order
         puts '---> Update validated order to database'
-        persistence_order_state(validated_order)
+        persist_order_state(validated_order)
         puts '----'
 
         #Priced Order
@@ -37,7 +37,7 @@ module OrderTaking
 
         # Store priced order
         puts '---> Update priced order to database'
-        persistence_order_state(priced_order)
+        persist_order_state(priced_order)
         puts '----'
 
         priced_order
@@ -45,7 +45,7 @@ module OrderTaking
 
     private
 
-    def self.persistence_order_state(order_state)
+    def self.persist_order_state(order_state)
       ActiveRecord::Base.transaction do
         order_hash, order_line_hashes = Order.from_domain(order_state)
 
